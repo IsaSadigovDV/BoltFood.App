@@ -1,0 +1,12 @@
+C:\WindowsFormLessons\BoltFood.App\BoltFood.Core\bin\Debug\net6.0\BoltFood.Core.deps.json
+C:\WindowsFormLessons\BoltFood.App\BoltFood.Core\bin\Debug\net6.0\BoltFood.Core.dll
+C:\WindowsFormLessons\BoltFood.App\BoltFood.Core\bin\Debug\net6.0\BoltFood.Core.pdb
+C:\WindowsFormLessons\BoltFood.App\BoltFood.Core\obj\Debug\net6.0\BoltFood.Core.csproj.AssemblyReference.cache
+C:\WindowsFormLessons\BoltFood.App\BoltFood.Core\obj\Debug\net6.0\BoltFood.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\WindowsFormLessons\BoltFood.App\BoltFood.Core\obj\Debug\net6.0\BoltFood.Core.AssemblyInfoInputs.cache
+C:\WindowsFormLessons\BoltFood.App\BoltFood.Core\obj\Debug\net6.0\BoltFood.Core.AssemblyInfo.cs
+C:\WindowsFormLessons\BoltFood.App\BoltFood.Core\obj\Debug\net6.0\BoltFood.Core.csproj.CoreCompileInputs.cache
+C:\WindowsFormLessons\BoltFood.App\BoltFood.Core\obj\Debug\net6.0\BoltFood.Core.dll
+C:\WindowsFormLessons\BoltFood.App\BoltFood.Core\obj\Debug\net6.0\refint\BoltFood.Core.dll
+C:\WindowsFormLessons\BoltFood.App\BoltFood.Core\obj\Debug\net6.0\BoltFood.Core.pdb
+C:\WindowsFormLessons\BoltFood.App\BoltFood.Core\obj\Debug\net6.0\ref\BoltFood.Core.dll
