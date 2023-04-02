@@ -9,13 +9,14 @@ public class Product:BaseModel
     public double Price { get; set; }
     public ProductCategoryEnum productCategoryEnum { get; set; }
     public Restaurant Restaurant { get; set; }
-    public Product(string Name, double price,ProductCategoryEnum category):base(Name)
+    public Product(Restaurant restaurant,string Name, double price,ProductCategoryEnum category):base(Name)
     {
         _id++;
         Id = _id;
         name = Name;
         Price = price;
         productCategoryEnum = category;
+        Restaurant = restaurant;
     }
 
     public override string ToString()

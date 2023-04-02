@@ -27,8 +27,9 @@ namespace BoltFood.Service.Services.Implementations
                 return null;
             }
 
-            Product product = new Product(name, price,category);
+            Product product = new Product(restaurant,name,price,category);
             restaurant.productsList.Add(product);
+            
             Console.ForegroundColor= ConsoleColor.Green;
             return "Product is created succesfully";
             

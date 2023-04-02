@@ -24,7 +24,7 @@ namespace BoltFood.Data.Repositories
 
         public async Task<T> GetAysnc(Func<T, bool> expression)
         {
-            return Items.FirstOrDefault(expression);
+            return _items.FirstOrDefault(expression);
         }
 
         public async Task RemoveAsync(T model)
