@@ -23,7 +23,7 @@ namespace BoltFood.Service.Services.Implementations
             if (restaurant == null)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Res not have");
+                Console.WriteLine("Restaurant is not found. Please try again");
                 return null;
             }
 

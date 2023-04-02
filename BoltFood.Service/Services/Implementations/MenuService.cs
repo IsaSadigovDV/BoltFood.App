@@ -218,7 +218,7 @@ namespace BoltFood.Service.Services.Implementations
             string name = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(name))
             {
-                Console.WriteLine("Please Add name");
+                Console.WriteLine("Please enter name correctly");
                 return;
 
             }
@@ -268,11 +268,14 @@ namespace BoltFood.Service.Services.Implementations
             int.TryParse(Console.ReadLine(), out int id);
 
             Product product = await _productService.GetAsync(id);
-            Console.WriteLine($"ProductName: {product.name} RestoranName: ");
+            Console.WriteLine($"ProductName: {product.name} RestoranName: {product.Restaurant.name} ");
         }
 
         private async Task UpdateProduct()
         {
+            Console.WriteLine("Please enter restaurant id number");
+            int.TryParse(Console.ReadLine(), out int id);
+
             Console.WriteLine("Please enter product name");
             string name = Console.ReadLine();
 
@@ -300,7 +303,8 @@ namespace BoltFood.Service.Services.Implementations
             }
 
 
-            //string message = await _productService.UpdateAsync(id,name,price);
+            string message = await _productService.UpdateAsync(id, name, price);
+            Console.WriteLine(message);
         }
 
         private async Task RemoveProduct()
