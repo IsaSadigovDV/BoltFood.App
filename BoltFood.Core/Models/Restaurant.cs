@@ -11,16 +11,16 @@ namespace BoltFood.Core.Models
     public class Restaurant:BaseModel
     {
         private static int _id;
-        public RestaurantCategoryEnum RestaurantCategoryEnum { get; set; }
+        public RestaurantCategoryEnum RestaurantCategoryEnum { get; set;}
 
-        public List<Product> products;
+        public List<Product> productsList;
         public Product Product { get; set; }
 
         public Restaurant(string name,RestaurantCategoryEnum restaurantCategory):base(name)
         {
             _id++;
             Id = _id;
-            products= new List<Product>();
+            productsList= new List<Product>();
             RestaurantCategoryEnum = restaurantCategory;
         }
     }

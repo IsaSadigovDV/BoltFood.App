@@ -4,6 +4,7 @@ using BoltFood.Data.Repositories.RestaurantRepository;
 using BoltFood.Service.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -14,9 +15,12 @@ namespace BoltFood.Service.Services.Implementations
 {
     public class MenuService : IMenuService
     {
+        private readonly IRestaurantService _restaurantservice = new RestaurantService();
+
+        private readonly IProductService _productService = new ProductService();
         public void AnimatedWriteline(string message, ConsoleColor color)
         {
-            int delay = 20;
+            int delay = 1;
             Console.ForegroundColor = color;
             foreach (char c in message)
             {
@@ -29,8 +33,15 @@ namespace BoltFood.Service.Services.Implementations
         }
         public async Task ShowMenuAsync()
         {
+
+            AnimatedWriteline("Welcome to Bolt Food console application", ConsoleColor.Magenta);
+            AnimatedWriteline("App is developed by Isa Sadigov", ConsoleColor.Magenta);
+            AnimatedWriteline("Please select one of theese options", ConsoleColor.Yellow);
+
             show();
-            int.TryParse(Console.ReadLine(), out int request);    
+
+            int.TryParse(Console.ReadLine(), out int request);   
+            
             while (request!=0)
             {
                switch(request)
@@ -50,103 +61,74 @@ namespace BoltFood.Service.Services.Implementations
                         break;
                     case 4:
                         Console.Clear();
-
+                        await UpdateRestaurant();
+                        break;
+                    case 5:
+                        Console.Clear();
+                        await RemoveRestaurant();
+                        break;
+                    case 6:
+                        Console.Clear();
+                        await CreateProduct();
+                        break;
+                    case 7:
+                        Console.Clear();
+                        await ShowAllProducts();
+                        break;
+                    case 8:
+                        Console.Clear();
+                        await GetProduct();
+                        break;
+                    case 9:
+                        Console.Clear();
+                        await UpdateProduct();
+                        break;
+                    case 10:
+                        Console.Clear();    
+                        await RemoveProduct();
                         break;
 
-                }
-            }
-        }
-        /*
-        public async Task ShowMenuAsync()
-        {
-
-            AnimatedWriteline("Welcome to Bolt Food console application",ConsoleColor.Magenta);
-            AnimatedWriteline("App is developed by Isa Sadigov", ConsoleColor.Yellow);
-            AnimatedWriteline("Please select one of theese options", ConsoleColor.Yellow);
-
-           
-            bool status = true;
-            while (status is true)
-            {
-                AnimatedWriteline("1.Restaurant", ConsoleColor.Magenta);
-                AnimatedWriteline("2.Product", ConsoleColor.Cyan);
-                AnimatedWriteline("3.About", ConsoleColor.Green);
-                int.TryParse(Console.ReadLine(), out int request);
-               
-                switch (request)
-                {
-                    case 1:
-                        AnimatedWriteline("1.Create a restaurant", ConsoleColor.Magenta);
-                        AnimatedWriteline("2.Update a restaurant", ConsoleColor.Magenta);
-                        AnimatedWriteline("3.Remove a restaurant" , ConsoleColor.Magenta);
-                        AnimatedWriteline("4.Get a restaurant by Id", ConsoleColor.Magenta);
-                        AnimatedWriteline("5.Get all restaurants ", ConsoleColor.Magenta);
-
-                        while(status)
-                        {
-                            int.TryParse(Console.ReadLine(), out request);
-                            switch (request)
-                            {
-                                case 1:
-                                    await CreateRestaurant();
-                                    break;
-                                case 6:
-                                    status = false;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        status = true;
-                        break;
-                    case 2:
-                        AnimatedWriteline("Add a product", ConsoleColor.Cyan);
-                        AnimatedWriteline("Update a product", ConsoleColor.Cyan);
-                        AnimatedWriteline("Remove a product", ConsoleColor.Cyan);
-                        AnimatedWriteline("Get a product by id", ConsoleColor.Cyan);
-                        AnimatedWriteline("Get all products", ConsoleColor.Cyan);
-                        break;
-                    case 3:
-                        AnimatedWriteline("Bolt Food is a food delivery service offered by the transportation network company Bolt (formerly known as Taxify). The service operates in various cities across Europe, " +
-                            "Africa, and the Middle East. With Bolt Food, customers can order food from local restaurants and have it delivered directly to their door.\r\n\r\nTo use Bolt Food, customers need to " +
-                            "download the Bolt app and select the \"Food Delivery\" " +
-                            "option. From there, they can browse through the list of available restaurants and menu items, place an order, and pay for it through the app. Once the order is confirmed," +
-                            " the customer can track the delivery in real-time and receive " +
-                            "notifications when the driver is on their way" +
-                            ".\r\n\r\nOne of the benefits of Bolt Food is that it offers " +
-                            "affordable delivery fees, which can be as low as 1 euro in some cities. Bolt Food also claims to offer fast and reliable delivery times, with an average delivery time of 30 " +
-                            "minutes or less.\r\n\r\nHowever, as with any food delivery service," +
-                            " there are some potential drawbacks to using Bolt Food." +
-                            " These may include higher prices for menu items compared to ordering " +
-                            "directly from the restaurant, potential issues with food quality or accuracy of orders, and delays or issues with the delivery process.\r\n\r\nOverall," +
-                            " Bolt Food can be a convenient option for customers who want to order food from their favorite restaurants without leaving their homes. However" +
-                            ", it's important to weigh the pros and cons and make an informed decision based on your individual needs and preferences.", ConsoleColor.Green);
+                    default:
+                        Console.Clear();
+                        AnimatedWriteline("Please select option number correctly",ConsoleColor.Red);
                         break;
                 }
+
+                 Console.ForegroundColor= ConsoleColor.White;
+                 show();
+                 int.TryParse(Console.ReadLine(), out  request);
             }
         }
-
-        */
-
         private void show()
         {
-            Console.WriteLine("1.Create a restaurant");
-            Console.WriteLine("2.Show all restaurant");
-            Console.WriteLine("3.Get a restaurant");
-            Console.WriteLine("4.Update a restaurant");
-            Console.WriteLine("5.Remove a restaurant");
-            Console.WriteLine("6.Create a product");
-            Console.WriteLine("7.Show all products");
-            Console.WriteLine("8.Get a product");
-            Console.WriteLine("9.Update a product");
-            Console.WriteLine("10.Remove a product");
+            AnimatedWriteline("1.Create a restaurant", ConsoleColor.Yellow);
+            AnimatedWriteline("2.Show all restaurant", ConsoleColor.Yellow);
+            AnimatedWriteline("3.Get a restaurant", ConsoleColor.Yellow);
+            AnimatedWriteline("4.Update a restaurant", ConsoleColor.Yellow);
+            AnimatedWriteline("5.Remove a restaurant", ConsoleColor.Yellow);
+            AnimatedWriteline("-----------------------", ConsoleColor.Yellow);
+            AnimatedWriteline("6.Create a product", ConsoleColor.Yellow);
+            AnimatedWriteline("7.Show all products", ConsoleColor.Yellow);
+            AnimatedWriteline("8.Get a product", ConsoleColor.Yellow);
+            AnimatedWriteline("9.Update a product", ConsoleColor.Yellow);
+            AnimatedWriteline("10.Remove a product", ConsoleColor.Yellow);
 
         }
-        private readonly RestaurantService _restaurantservice = new RestaurantService();
-        private readonly ProductService _productService = new ProductService();
+
+       
         private async Task CreateRestaurant()
         {
-            Console.WriteLine("Please choose Resstaurant category");
+            Console.WriteLine("Please add restaurant name");
+            string name = Console.ReadLine();
+
+           if(string.IsNullOrWhiteSpace(name))
+            {
+                AnimatedWriteline("Name can not be space!!!", ConsoleColor.Red);
+                return;
+            }
+
+
+            Console.WriteLine("Please choose Restaurant category");
 
             var Enums = Enum.GetValues(typeof(RestaurantCategoryEnum));
 
@@ -159,16 +141,19 @@ namespace BoltFood.Service.Services.Implementations
 
             try
             {
-                var restaurantcategory = Enums.GetValue(restaurantCategory - 1);
+                Enums.GetValue(restaurantCategory - 1);
             }
             catch (Exception)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Please choose correct option!!!"); 
+                Console.WriteLine("Please choose correct option!!!");
+                return; 
             }
-            Console.WriteLine("Please add restaurant name");
-            string name = Console.ReadLine();
-           string message = await _restaurantservice.CreateAsync(name, (RestaurantCategoryEnum)restaurantCategory);
+
+            
+
+           string message =  await _restaurantservice.CreateAsync(name, (RestaurantCategoryEnum)restaurantCategory);
+            Console.WriteLine(message);
         }
 
 
@@ -178,7 +163,8 @@ namespace BoltFood.Service.Services.Implementations
 
             foreach (var item in restaurants)
             {
-                Console.WriteLine(item);
+                AnimatedWriteline($"Restaurant ID {item.Id} Restaurant Name:{item.name} " +
+                    $"Restaurant Category{item.RestaurantCategoryEnum}:",ConsoleColor.Green);
             }
         }
 
@@ -189,16 +175,142 @@ namespace BoltFood.Service.Services.Implementations
             int.TryParse(Console.ReadLine(),out int id);
 
             Restaurant restaurant = await _restaurantservice.GetAsync(id);
-            Console.WriteLine(restaurant);
+            Console.WriteLine($"Restaurant ID {restaurant.Id} Restaurant Name: {restaurant.name} " +
+                $"Restaurant Category{restaurant.RestaurantCategoryEnum}");
         }
 
         private async Task UpdateRestaurant()
         {
-            Console.WriteLine("Please enter restaurant id to update");
+            Console.WriteLine("Please add a restaurant id to update");
             int.TryParse(Console.ReadLine(), out int id);
 
-            string message = await _restaurantservice.UpdateAsync();
+            Console.WriteLine("Please enter Restoran");
+            string name =  Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("Please Add name");
+                return;
+                
+            }
+
+
+            string message =  await _restaurantservice.UpdateAsync(id, name);
+            Console.WriteLine(message);
         }
 
+        private async Task RemoveRestaurant()
+        {
+            AnimatedWriteline("Enter id number to remove",ConsoleColor.DarkGreen);
+
+            int.TryParse(Console.ReadLine(), out int id);
+
+            string message = await _restaurantservice.RemoveAsync(id);
+            Console.WriteLine(message);
+        }
+
+        //-----------------------------------------------
+        private async Task CreateProduct()
+        {
+            Console.WriteLine("Please enter Restoran Id");
+            int restoranId=int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Please enter product name");
+            string name = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("Please Add name");
+                return;
+
+            }
+
+            Console.WriteLine("Please enter product price");
+            double.TryParse(Console.ReadLine(), out double price);
+
+            Console.WriteLine("Please select category of product");
+            // category readline could be
+            var Enums = Enum.GetValues(typeof(ProductCategoryEnum));
+            foreach (var item in Enums)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine((int)item + "." + item);
+            }
+            int.TryParse(Console.ReadLine(), out int productcategory);
+
+            try
+            {
+                Enums.GetValue(productcategory - 1);
+            }
+            catch (Exception)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You must enter product category correctly");
+            }
+
+
+
+            string message = await _productService.CreateAsync(restoranId,name, price, (ProductCategoryEnum)productcategory);
+            Console.WriteLine(message);
+        }
+
+        private async Task ShowAllProducts()
+        {
+            List<Product> products = await _productService.GetAllAsync();
+         
+            foreach (Product product in products)
+            {
+                Console.WriteLine($"ProductId: {product.Id} ProductName: {product.name} RestoranName:{product.Restaurant.name} ");
+            }
+        }
+
+        private async Task GetProduct()
+        {
+            AnimatedWriteline("Please enter product id", ConsoleColor.Magenta);
+            int.TryParse(Console.ReadLine(), out int id);
+
+            Product product = await _productService.GetAsync(id);
+            Console.WriteLine($"ProductName: {product.name} RestoranName: ");
+        }
+
+        private async Task UpdateProduct()
+        {
+            Console.WriteLine("Please enter product name");
+            string name = Console.ReadLine();
+
+            Console.WriteLine("Please enter product price");
+            double.TryParse(Console.ReadLine(), out double price);
+
+            Console.WriteLine("Please select category of product");
+            // category readline could be
+            var Enums = Enum.GetValues(typeof(ProductCategoryEnum));
+            foreach (var item in Enums)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine((int)item + "." + item);
+            }
+            int.TryParse(Console.ReadLine(), out int productcategory);
+
+            try
+            {
+                Enums.GetValue(productcategory);
+            }
+            catch (Exception)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You must enter product category correctly");
+            }
+
+
+            //string message = await _productService.UpdateAsync(id,name,price);
+        }
+
+        private async Task RemoveProduct()
+        {
+            AnimatedWriteline("Please enter product id to delete", ConsoleColor.Cyan);
+
+            int.TryParse(Console.ReadLine(), out int id);
+
+            string message = await _productService.RemoveAsync(id);
+            Console.WriteLine(message);
+        }
     }
 }

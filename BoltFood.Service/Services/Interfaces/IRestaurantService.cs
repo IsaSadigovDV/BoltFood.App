@@ -13,8 +13,8 @@ namespace BoltFood.Service.Services.Interfaces
     public interface IRestaurantService
     {
         public Task<string> CreateAsync(string name, RestaurantCategoryEnum restaurantCategoryEnum);
-        public Task<string> UpdateAsync();
-        public Task<string> RemoveAsync();
+        public Task<string> UpdateAsync(int Id,string name);
+        public Task<string> RemoveAsync(int Id);
         public Task<Restaurant> GetAsync(int id);
         public Task<List<Restaurant>> GetAllAsync();
        

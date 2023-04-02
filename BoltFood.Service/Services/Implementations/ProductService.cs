@@ -16,30 +16,19 @@ namespace BoltFood.Service.Services.Implementations
     {
         private readonly IRestaurantRepository _restaurantRepository = new restaurantRepository();
 
-        public async Task<string> CreateAsync(string name,double price,ProductCategoryEnum category,int id)
+        public async Task<string> CreateAsync(int restoranId, string name, double price, ProductCategoryEnum category)
         {
 
-            Console.WriteLine("Please enter product name");
-            string PName = Console.ReadLine();
-
-            Console.WriteLine("Please enter product price");
-            double.TryParse(Console.ReadLine(), out price);
-
-            Console.WriteLine("Please select category of product");
-            
-            // category readline could be
-
-            Restaurant restaurant = await _restaurantRepository.GetAysnc(x=>x.Id == id);
-
-            if(restaurant == null)
+            Restaurant restaurant =  await _restaurantRepository.GetAysnc(x => x.Id == restoranId);
+            if (restaurant == null)
             {
-                Console.ForegroundColor= ConsoleColor.Red;
-                return "Restaurant is not found. Please add a restaurant then check"; 
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Res not have");
+                return null;
             }
 
             Product product = new Product(name, price,category);
-            restaurant.products.Add(product);
-
+            restaurant.productsList.Add(product);
             Console.ForegroundColor= ConsoleColor.Green;
             return "Product is created succesfully";
             
@@ -52,7 +41,7 @@ namespace BoltFood.Service.Services.Implementations
             List<Product> products = new List<Product>();
             foreach (var item in restaurants)
             {
-                products.AddRange(item.products);
+                products.AddRange(item.productsList);
             }
             return products;
         }
@@ -63,7 +52,7 @@ namespace BoltFood.Service.Services.Implementations
 
             foreach (var item in restaurants)
             {
-                Product product = item.products.Find(x => x.Id == id);
+                Product product = item.productsList.Find(x => x.Id == id);
                 if (product !=null)
                 {
                     return product;
@@ -80,10 +69,60 @@ namespace BoltFood.Service.Services.Implementations
 
             foreach (var item in restaurants)
             {
-                Product product = item.products.Find(x => x.Id == id);
+                Product product = item.productsList.Find(x => x.Id == id);
                 if (product != null)
                 {
-                    item.products.Remove(product);
+                    item.productsList.Remove(product);
+                    await _restaurantRepository.UpdateAsync(item);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    return "Product is removed succesfully";
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.Red; 
+            return "Product is not found. Please try again!";
+        }
+
+        public async Task<string> UpdateAsync(int id, string name, double price)
+        {
+            List<Restaurant> restaurants = await _restaurantRepository.GetAllAsync();
+
+            foreach (var item in restaurants)
+            {
+                Product product = item.productsList.Find(x => x.Id == id);
+                if (product != null)
+                {
+
+                    Console.WriteLine("Please enter product name");
+                    string Name = Console.ReadLine();
+
+                    Console.WriteLine("Please enter product price");
+                    double.TryParse(Console.ReadLine(), out  price);
+
+                    Console.WriteLine("Please select category of product");
+                    // category readline could be
+                    var Enums = Enum.GetValues(typeof(ProductCategoryEnum));
+                    foreach (var productenum in Enums)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine((int)productenum + "." + productenum);
+                    }
+                    int.TryParse(Console.ReadLine(), out int productcategory);
+
+                    try
+                    {
+                        Enums.GetValue(productcategory);
+                    }
+                    catch (Exception)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        return "You must enter product category correctly";
+
+                    }
+                    Restaurant restaurant = await _restaurantRepository.GetAysnc(x => x.Id == id);
+                    product.Price = price;
+                    product.name = Name;
+                    product.productCategoryEnum = (ProductCategoryEnum)productcategory;
+                    product.UpdatedDate = DateTime.Now;
                     await _restaurantRepository.UpdateAsync(item);
                     Console.ForegroundColor = ConsoleColor.Green;
                     return "Product is removed succesfully";
@@ -93,35 +132,6 @@ namespace BoltFood.Service.Services.Implementations
             return "Product is not found. Please try again!";
         }
 
-        public async Task<string> UpdateAsync(int id)
-        {
-            List<Restaurant> restaurants = await _restaurantRepository.GetAllAsync();
-
-            foreach (var item in restaurants)
-            {
-                Product product = item.products.Find(x => x.Id == id);
-                if (product != null)
-                {
-                    Console.WriteLine("Please enter product name");
-                    string Name = Console.ReadLine();
-
-                    Console.WriteLine("Please enter product price");
-                    double.TryParse(Console.ReadLine(), out double price);
-
-                    Console.WriteLine("Please select category of product");
-                    // category readline could be
-
-                    Restaurant restaurant = await _restaurantRepository.GetAysnc(x => x.Id == id);
-
-                    product.Price = price;
-                    product.name = Name;
-                    //await _restaurantRepository.UpdateAsync(item);
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    return "Product is removed succesfully";
-                }
-            }
-            Console.ForegroundColor = ConsoleColor.Green;
-            return "Product is not found. Please try again!";
-        }
+    
     }
 }

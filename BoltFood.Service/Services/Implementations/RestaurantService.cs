@@ -20,6 +20,7 @@ namespace BoltFood.Service.Services.Implementations
         public async Task<string> CreateAsync(string name, RestaurantCategoryEnum restaurantCategoryEnum)
         {
             Restaurant restaurant = new Restaurant(name, restaurantCategoryEnum);
+
             Console.ForegroundColor= ConsoleColor.Green;
             await _restaurantRepository.AddAsync(restaurant);
             return "Succesfully Created!";
@@ -55,16 +56,12 @@ namespace BoltFood.Service.Services.Implementations
                 return null;
             }
 
-            return restaurant.products;
+            return restaurant.productsList;
         }
 
-        public async Task<string> RemoveAsync()
-        {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Enter id number to remove");
-
-            int.TryParse(Console.ReadLine(), out int id);
-            Restaurant restaurant = await _restaurantRepository.GetAysnc(x=>x.Id == id);
+        public async Task<string> RemoveAsync(int Id)
+        {         
+            Restaurant restaurant = await _restaurantRepository.GetAysnc(x=>x.Id == Id);
 
             if (restaurant == null)
             {
@@ -78,24 +75,21 @@ namespace BoltFood.Service.Services.Implementations
             
         }
 
-        public async Task<string> UpdateAsync(int id , string name)
+        public async Task<string> UpdateAsync(int Id, string name)
         {
-             Restaurant restaurant = await _restaurantRepository.GetAysnc(x=>x.Id == id);
+            Restaurant restaurant = await _restaurantRepository.GetAysnc(x=>x.Id== Id);
+
             if (restaurant == null)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                return "Restaurant is not found. Please add a restaurant";
+                return "Are you kidding? There is no restaurant";
             }
-            Console.WriteLine("Enter restaurant name");
             restaurant.name = name;
-            Console.ForegroundColor = ConsoleColor.Green;
+            await _restaurantRepository.UpdateAsync(restaurant);
+
+            Console.ForegroundColor= ConsoleColor.Green;
             return "Restaurant is updated succesfully";
-
         }
-
-        public Task<string> UpdateAsync()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
