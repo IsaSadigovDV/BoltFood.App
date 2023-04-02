@@ -29,7 +29,6 @@ namespace BoltFood.Service.Services.Implementations
 
             Product product = new Product(restaurant,name,price,category);
             restaurant.productsList.Add(product);
-            
             Console.ForegroundColor= ConsoleColor.Green;
             return "Product is created succesfully";
             
